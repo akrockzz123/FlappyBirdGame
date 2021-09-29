@@ -48,8 +48,9 @@ class PlayScene extends Phaser.Scene{
     
 
     this.upperpipe = this.pipes.create(0,0,'pipe').setOrigin(0,1);
-
+    this.upperpipe.body.immovable = true;
     this.lowerpipe = this.pipes.create(0,0,'pipe').setOrigin(0,0);
+    this.lowerpipe.body.immovable = true;
     this.placepipe(this.upperpipe,this.lowerpipe);
     
     
@@ -142,6 +143,8 @@ restartBirdPosition() {
   
     this.birds.x = this.config.startPosition.x;
     this.birds.y = this.config.startPosition.y;
+    this.physics.pause();
+    this.birds.setTint(0xf0000);
   
   }
 }
