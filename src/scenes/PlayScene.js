@@ -39,7 +39,7 @@ class PlayScene extends Phaser.Scene{
   this.birds.body.gravity.y = 400;
   this.birds.body.setCollideWorldBounds = true;
 
-  
+  this.pipeHorizontaldistance = 0;
 
   this.birds.body.gravity.y = 200;
 
@@ -79,7 +79,7 @@ flap() {
       this.physics.add.collider(this.birds,this.pipes,this.restartBirdPosition,null,this);
   }
  update() {
-    if(this.birds.y > this.config.height || this.birds.y <= -this.birds.height )
+    if(this.birds.getBounds().bottom >= this.config.height || this.birds.getBounds().y <= 0 )
     {
       this.restartBirdPosition();
     }
@@ -142,10 +142,18 @@ restartBirdPosition() {
 
     this.birds.body.velocity.y = 0;
   
-    this.birds.x = this.config.startPosition.x;
-    this.birds.y = this.config.startPosition.y;
+    //this.birds.x = this.config.startPosition.x;
+    //this.birds.y = this.config.startPosition.y;
     this.physics.pause();
     this.birds.setTint(0xf0000);
+
+    this.time.addEvent({
+        delay: 2000,
+        callback: () => {
+            this.scene.restart();
+        },
+        loop: false
+    })
   
   }
 }
