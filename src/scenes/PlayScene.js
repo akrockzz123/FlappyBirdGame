@@ -28,17 +28,21 @@ class PlayScene extends Phaser.Scene{
    preload() {
         console.log(this.config);
         this.load.image('sky','assets/sky.png');
-        this.load.image('bird', 'assets/bird.png');
-        this.load.image('pipe','assets/pipe.png');
        
+        this.load.image('pipe','assets/pipe.png');
+        this.load.image('pause','assets/pause.png');
+        this.load.spritesheet('bird','assets/birdSprite.png',{
+            frameWidth: 16,frameHeight: 16
+        });
     }
 
      create() {
         
         console.log(this.config,"add");
   this.add.image(0,0,'sky').setOrigin(0);
+  //this.createPause();
   //this.add.image(config.startposition.x,config.startposition.y, 'bird');
-  this.birds = this.physics.add.sprite(this.config.startPosition.x,this.config.startPosition.y,'bird').setOrigin(0,1)
+  this.birds = this.physics.add.sprite(this.config.startPosition.x,this.config.startPosition.y,'bird').setScale(3).setFlip(true).setOrigin(0,1)
   this.birds.body.gravity.y = 400;
   this.birds.body.setCollideWorldBounds = true;
 
@@ -70,11 +74,26 @@ class PlayScene extends Phaser.Scene{
   this.createScore();
   this.input.on('pointerdown',this.flap,this);
   this.input.keyboard.on('keydown_SPACE',this.flap,this);
-  
 
+  this.anims.create({
+      key : 'fly',
+      frames: this.anims.generateFrameNumbers('bird',{
+          start: 8,
+          end: 15
+      }),
+      frameRate: 8,
+      repeat: -1,
+
+      
+  })
+
+  this.birds.play('fly');
   
-  //debugger
 }
+  //debugger
+
+
+
 
 flap() {
     this.birds.body.velocity.y = - this.flapVelocity;
@@ -101,7 +120,7 @@ flap() {
   createScore() {
       this.score = 0;
       this.scoreText = this.add.text(16,16,`Score ${0}  `, { fontSize: '32px',fills: '#000'});
-      this.bestScoreText = this.add.text(50,50,`BestScore ${0}  `, { fontSize: '32px',fills: '#000'});
+      this.bestScoreText = this.add.text(50,50,`BestScore ${this.bestScore}  `, { fontSize: '32px',fills: '#000'});
   }
  update() {
     if(this.birds.getBounds().bottom >= this.config.height || this.birds.getBounds().y <= 0 )
@@ -115,7 +134,7 @@ flap() {
    placepipe(upipe,lpipe) {
     //let getrightmostpipeX = getRightMostPipe(upipe);
     this.pipeHorizontaldistance += Phaser.Math.Between(this.horizontaldistancerange[0],this.horizontaldistancerange[1]);
-    let pipeVerticalDistance = Phaser.Math.Between(100,150);
+    let pipeVerticalDistance = Phaser.Math.Between(200,250);
     let pipeVerticalPosition = Phaser.Math.Between(0+20,this.config.height-20-pipeVerticalDistance);
   
       upipe.x = this.pipeHorizontaldistance;
@@ -172,7 +191,7 @@ restartBirdPosition() {
     //this.birds.x = this.config.startPosition.x;
     //this.birds.y = this.config.startPosition.y;
     this.physics.pause();
-    this.birds.setTint(0xf0000);
+    this.birds.setTint('#ff0000');
 
     this.time.addEvent({
         delay: 2000,
