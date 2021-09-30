@@ -13,13 +13,15 @@ class PlayScene extends Phaser.Scene{
         this.upperpipe = null;
         this.lowerpipe = null;
         let flapVelocity = 250;
-        this.GapBetweenPipes = [300,400];
+        this.GapBetweenPipes = [1500,2000];
         this.pipeHorizontaldistance = 0;
         
         this.horizontaldistancerange = [400,600];
         this.flapVelocity = 300;
         this.score = 0;
         this.scoreText = '';
+        this.bestScore = 0;
+        this.bestScoreText='';
     }
 
 
@@ -81,6 +83,16 @@ flap() {
   increaseScore() {
       this.score++;
       this.scoreText.setText(`Score: ${this.score}`);
+      if(this.bestScore >= this.score)
+      {
+        this.bestScore = this.bestScore;
+      }
+      else
+      {
+        this.bestScore = this.score;
+      }
+      
+      this.bestScoreText.setText(`BestScore: ${this.bestScore}`);
   }
 
   createCollider() {
@@ -89,6 +101,7 @@ flap() {
   createScore() {
       this.score = 0;
       this.scoreText = this.add.text(16,16,`Score ${0}  `, { fontSize: '32px',fills: '#000'});
+      this.bestScoreText = this.add.text(50,50,`BestScore ${0}  `, { fontSize: '32px',fills: '#000'});
   }
  update() {
     if(this.birds.getBounds().bottom >= this.config.height || this.birds.getBounds().y <= 0 )
