@@ -125,7 +125,15 @@ flap() {
       this.bestScoreText = this.add.text(50,50,`BestScore ${this.bestScore}  `, { fontSize: '32px',fills: '#000'});
   }
   createPause() {
-      this.add.image(this.config.width-30,this.config.height-30,'pause').setScale(3),setOrigin(1);
+      const pauseButton = this.add.image(this.config.width-30,this.config.height-30,'pause').setScale(3).setOrigin(1);
+
+      pauseButton.setInteractive();
+
+      pauseButton.on('pointerdown',() => {
+          console.log("pausing the game");
+          this.physics.pause();
+          this.scene.pause();
+      })
   }
  update() {
     if(this.birds.getBounds().bottom >= this.config.height || this.birds.getBounds().y <= 0 )
