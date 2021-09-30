@@ -73,6 +73,8 @@ class PlayScene extends Phaser.Scene{
   this.createCollider(this)
   this.createScore();
   this.input.on('pointerdown',this.flap,this);
+
+  this.createPause();
   this.input.keyboard.on('keydown_SPACE',this.flap,this);
 
   this.anims.create({
@@ -121,6 +123,9 @@ flap() {
       this.score = 0;
       this.scoreText = this.add.text(16,16,`Score ${0}  `, { fontSize: '32px',fills: '#000'});
       this.bestScoreText = this.add.text(50,50,`BestScore ${this.bestScore}  `, { fontSize: '32px',fills: '#000'});
+  }
+  createPause() {
+      this.add.image(this.config.width-30,this.config.height-30,'pause').setScale(3),setOrigin(1);
   }
  update() {
     if(this.birds.getBounds().bottom >= this.config.height || this.birds.getBounds().y <= 0 )
