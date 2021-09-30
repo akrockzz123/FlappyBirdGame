@@ -46,7 +46,8 @@ class PlayScene extends Phaser.Scene{
 
   this.pipes = this.physics.add.group();
 
-  this.score = '';
+  this.scoreText = '';
+  this.score = 0;
   for(let i=0;i<4;i++) {
     
 
@@ -75,6 +76,11 @@ class PlayScene extends Phaser.Scene{
 
 flap() {
     this.birds.body.velocity.y = - this.flapVelocity;
+  }
+
+  increaseScore() {
+      this.score++;
+      this.scoreText.setText(`Score: ${this.score}`);
   }
 
   createCollider() {
@@ -120,6 +126,7 @@ flap() {
  recyclePipes() {
 
     const temppipes = [];
+  
     this.pipes.getChildren().forEach(pipe => {
       if(pipe.getBounds().right <= 0)
       {
@@ -129,6 +136,7 @@ flap() {
   
           if(temppipes.length ===2)
           {
+              this.increaseScore();
             this.placepipe(...temppipes);
           }
         }
